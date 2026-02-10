@@ -39,7 +39,7 @@ export default function Header() {
   return (
     <div className="sticky top-0 z-50 bg-background">
       <div className="flex justify-center items-center gap-6 p-2">
-        <h1 className="font-bold text-xl">Love Flavor</h1>
+        <h1 className="font-bold text-xl">Taste n’ Speak</h1>
         <div className="relative w-64">
           <Input
             type="search"
