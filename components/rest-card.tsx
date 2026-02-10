@@ -32,13 +32,14 @@ export default function RestaurantCard({
   };
 
   return (
-    <div className="bg-card text-card-foreground overflow-hidden rounded-lg border">
+    <div className="bg-card text-card-foreground overflow-hidden rounded-lg border cursor-pointer hover:scale-101 transition-all duration-300">
       <img
         src={imageSrc}
         alt={title}
-        className="h-48 w-full object-cover bg-muted-foreground"
+        className="h-52 w-full object-cover bg-muted-foreground"
         width={400}
         height={225}
+        draggable="false"
       />
       <div className="grid gap-1 p-4">
         <h1 className="text-lg leading-tight font-semibold">{title}</h1>
