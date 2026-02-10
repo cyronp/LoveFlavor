@@ -63,7 +63,7 @@ export default function Header() {
                     href="/restaurantes/mais-visitados"
                     title="Mais Visitados"
                   >
-                    Restaurantes mais populares da comunidade
+                    Restaurantes mais visitados por nós
                   </ListItem>
                 </ul>
               </NavigationMenuContent>
