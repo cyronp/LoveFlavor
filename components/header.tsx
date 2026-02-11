@@ -39,8 +39,8 @@ export default function Header() {
   return (
     <div className="sticky top-0 z-50 bg-background">
       <div className="flex justify-center items-center gap-6 p-2">
-        <h1 className="font-bold text-xl">Taste n’ Speak</h1>
-        <div className="relative w-64">
+        <h1 className="font-bold text-3xl md:text-xl">Taste n' Speak</h1>
+        <div className="md:flex relative w-64 hidden">
           <Input
             type="search"
             placeholder="Buscar"
@@ -48,11 +48,11 @@ export default function Header() {
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
         </div>
-        <Button className="rounded-full cursor-pointer">
+        <Button className="md:flex rounded-full cursor-pointer hidden">
           Adicionar novo local
         </Button>
       </div>
-      <div className="flex justify-center items-center p-1">
+      <div className="md:flex justify-center items-center p-1 hidden">
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
