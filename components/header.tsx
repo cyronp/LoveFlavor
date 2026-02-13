@@ -39,7 +39,7 @@ function ListItem({
 
 export default function Header() {
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = React.useMemo(() => createClient(), []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -50,7 +50,7 @@ export default function Header() {
     <div className="sticky top-0 z-50 bg-transparent backdrop-blur-md">
       <div className="flex justify-center items-center gap-6 p-2">
         <Link href="/">
-        <h1 className="font-bold text-3xl md:text-xl">Taste n' Speak</h1>
+          <h1 className="font-bold text-3xl md:text-xl">Taste n' Speak</h1>
         </Link>
         <div className="md:flex relative w-64 hidden">
           <Input
@@ -61,9 +61,7 @@ export default function Header() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
         </div>
         <Button className="md:flex rounded-full cursor-pointer hidden">
-          <Link href="/add-location">
-          Adicionar novo local
-          </Link>
+          <Link href="/add-location">Adicionar novo local</Link>
         </Button>
         <Button
           onClick={handleLogout}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,14 +8,17 @@ import { Label } from "@/components/ui/label";
 
 const ALLOWED_EMAILS = [
   "vitorhenriquedasilveira@gmail.com",
-  "marcellaconte45@gmail.com"
+  "marcellaconte45@gmail.com",
 ];
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const supabase = createClient();
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+  const supabase = useMemo(() => createClient(), []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +28,7 @@ export default function LoginPage() {
     if (!ALLOWED_EMAILS.includes(email.toLowerCase())) {
       setMessage({
         type: "error",
-        text: "Este e-mail não tem permissão para acessar o sistema."
+        text: "Este e-mail não tem permissão para acessar o sistema.",
       });
       setLoading(false);
       return;
@@ -43,13 +46,13 @@ export default function LoginPage() {
 
       setMessage({
         type: "success",
-        text: "Link mágico enviado! Verifique seu e-mail."
+        text: "Link mágico enviado! Verifique seu e-mail.",
       });
       setEmail("");
     } catch (error: any) {
       setMessage({
         type: "error",
-        text: error.message || "Erro ao enviar o link. Tente novamente."
+        text: error.message || "Erro ao enviar o link. Tente novamente.",
       });
     } finally {
       setLoading(false);
@@ -92,11 +95,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading}
-          >
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Enviando..." : "Enviar Link Mágico"}
           </Button>
         </form>

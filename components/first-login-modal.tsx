@@ -1,21 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ConfettiButton } from "@/components/ui/confetti"
+import { ConfettiButton } from "@/components/ui/confetti";
 
 interface FirstLoginModalProps {
   isOpen: boolean;
   onComplete: () => void;
 }
 
-export default function FirstLoginModal({ isOpen, onComplete }: FirstLoginModalProps) {
+export default function FirstLoginModal({
+  isOpen,
+  onComplete,
+}: FirstLoginModalProps) {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   if (!isOpen) return null;
 
@@ -26,20 +29,22 @@ export default function FirstLoginModal({ isOpen, onComplete }: FirstLoginModalP
     setLoading(true);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
       if (user) {
         const { error } = await supabase
           .from("user_profiles")
           .update({
             name: name.trim(),
             first_login_completed: true,
-            updated_at: new Date().toISOString()
+            updated_at: new Date().toISOString(),
           })
           .eq("id", user.id);
 
         if (error) throw error;
-        
+
         onComplete();
       }
     } catch (error) {
