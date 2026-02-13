@@ -1,9 +1,21 @@
 import { NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
   try {
-    const supabase = createAdminClient();
+    const cookieStore = await cookies();
+    const supabase = await createClient(cookieStore);
+    
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: 'Usuário não autenticado' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
 
     if (!body.restaurant_id) {
@@ -28,12 +40,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const { data, error } = await supabase
+    const adminSupabase = createAdminClient();
+    const { data, error } = await adminSupabase
       .from('review')
       .insert({
         restaurant_id: restaurantId,
         opinion: body.opinion,
         rating: body.rating,
+        user_id: user.id,
       })
       .select()
       .single();

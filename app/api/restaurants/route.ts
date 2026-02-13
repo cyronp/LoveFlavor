@@ -19,7 +19,12 @@ export async function GET() {
 
     const { data: allReviews, error: reviewsError } = await supabase
       .from('review')
-      .select('*')
+                .select(`
+        *,
+        user_profiles (
+          name
+        )
+      `)
       .order('created_at', { ascending: false });
 
     if (reviewsError) {
@@ -43,7 +48,7 @@ export async function GET() {
         rating: avgRating,
         visits: reviews.length,
         reviews: reviews.map(r => ({
-          author: 'Usuário',
+          author: r.user_profiles?.name || 'Usuário',
           rating: r.rating,
           comment: r.opinion || '',
           date: r.created_at,
@@ -85,7 +90,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Criar o restaurante primeiro para obter o ID
     const { data: restaurant, error: insertError } = await supabase
       .from('restaurant')
       .insert({
@@ -103,7 +107,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Upload da imagem para o Supabase Storage usando o ID do restaurante
     const fileExt = imageFile.name.split('.').pop();
     const fileName = `${restaurant.id}.${fileExt}`;
     const filePath = `restaurants/${fileName}`;
@@ -120,7 +123,6 @@ export async function POST(request: Request) {
       });
 
     if (uploadError) {
-      // Se falhar o upload, deletar o restaurante criado
       await supabase.from('restaurant').delete().eq('id', restaurant.id);
       return NextResponse.json(
         { error: `Erro ao fazer upload da imagem: ${uploadError.message}` },
@@ -128,13 +130,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // Obter a URL pública da imagem
     const { data: publicUrl } = supabase
       .storage
       .from('photos')
       .getPublicUrl(filePath);
 
-    // Atualizar o restaurante com a URL da imagem
     const { data: updatedRestaurant, error: updateError } = await supabase
       .from('restaurant')
       .update({ image_url: publicUrl.publicUrl })

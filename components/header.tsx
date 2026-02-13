@@ -2,8 +2,10 @@
 
 import * as React from "react";
 import { Input } from "./ui/input";
-import { Search } from "lucide-react";
+import { Search, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -36,10 +38,20 @@ function ListItem({
 }
 
 export default function Header() {
+  const router = useRouter();
+  const supabase = createClient();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
+
   return (
     <div className="sticky top-0 z-50 bg-transparent backdrop-blur-md">
       <div className="flex justify-center items-center gap-6 p-2">
+        <Link href="/">
         <h1 className="font-bold text-3xl md:text-xl">Taste n' Speak</h1>
+        </Link>
         <div className="md:flex relative w-64 hidden">
           <Input
             type="search"
@@ -49,7 +61,18 @@ export default function Header() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
         </div>
         <Button className="md:flex rounded-full cursor-pointer hidden">
+          <Link href="/add-location">
           Adicionar novo local
+          </Link>
+        </Button>
+        <Button
+          onClick={handleLogout}
+          variant="ghost"
+          size="icon"
+          className="md:flex rounded-full hidden"
+          title="Sair"
+        >
+          <LogOut className="w-5 h-5" />
         </Button>
       </div>
       <div className="md:flex justify-center items-center p-1 hidden">

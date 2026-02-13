@@ -53,7 +53,6 @@ export default function RestaurantModal({
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
-  const [reviewerName, setReviewerName] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -97,7 +96,6 @@ export default function RestaurantModal({
 
       setRating(0);
       setReviewText("");
-      setReviewerName("");
       setIsDrawerOpen(false);
 
       onVisitMarked?.();
@@ -372,20 +370,6 @@ export default function RestaurantModal({
 
           <form onSubmit={handleSubmit}>
             <div className="px-4 pb-4 space-y-4">
-              {/* Nome do Avaliador */}
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">
-                  Seu nome (opcional)
-                </label>
-                <Input
-                  type="text"
-                  placeholder="Digite seu nome"
-                  value={reviewerName}
-                  onChange={(e) => setReviewerName(e.target.value)}
-                  disabled={isSubmitting}
-                />
-              </div>
-
               {/* Rating com Corações */}
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-2 block">
