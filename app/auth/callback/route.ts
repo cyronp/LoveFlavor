@@ -8,28 +8,39 @@ export async function GET(request: Request) {
   const origin = requestUrl.origin;
 
   if (code) {
-    const cookieStore = await cookies();
-    const supabase = await createClient(cookieStore);
-    
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-    
-    if (error) {
-      console.error('Erro ao trocar código por sessão:', error);
-      return NextResponse.redirect(`${origin}/login?error=auth_failed`);
-    }
-
-    if (data.user) {
-      const { data: profile, error: profileError } = await supabase
-        .from("user_profiles")
-        .select("first_login_completed")
-        .eq("id", data.user.id)
-        .single();
-
-      if (!profileError && profile && !profile.first_login_completed) {
-        return NextResponse.redirect(`${origin}/?firstLogin=true`);
+    try {
+      const cookieStore = await cookies();
+      const supabase = await createClient(cookieStore);
+      
+      // Troca o código por uma sessão
+      const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+      
+      if (error) {
+        console.error('Erro ao trocar código por sessão:', error);
+        return NextResponse.redirect(`${origin}/login?error=auth_failed`);
       }
+
+      if (data.user) {
+        // Verifica se é o primeiro login do usuário
+        const { data: profile, error: profileError } = await supabase
+          .from("user_profiles")
+          .select("first_login_completed")
+          .eq("id", data.user.id)
+          .single();
+
+        if (!profileError && profile && !profile.first_login_completed) {
+          return NextResponse.redirect(`${origin}/?firstLogin=true`);
+        }
+      }
+      
+      // Redireciona para a página principal
+      return NextResponse.redirect(`${origin}`);
+    } catch (error) {
+      console.error('Erro no callback de autenticação:', error);
+      return NextResponse.redirect(`${origin}/login?error=callback_failed`);
     }
   }
 
-  return NextResponse.redirect(`${origin}`);
+  // Se não houver código, redireciona para login
+  return NextResponse.redirect(`${origin}/login`);
 }

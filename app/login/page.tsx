@@ -35,10 +35,13 @@ export default function LoginPage() {
     }
 
     try {
+      const redirectUrl = `${window.location.origin}/auth/callback`;
+
       const { error } = await supabase.auth.signInWithOtp({
         email: email.toLowerCase(),
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: redirectUrl,
+          shouldCreateUser: true,
         },
       });
 
