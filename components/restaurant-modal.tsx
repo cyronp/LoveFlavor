@@ -4,7 +4,6 @@ import { useEffect, useState, useRef } from "react";
 import { X, Heart, MapPinCheck, Stamp } from "lucide-react";
 import { type Category } from "./rest-card";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import {
   Drawer,
   DrawerClose,
@@ -48,7 +47,6 @@ export default function RestaurantModal({
   const [isDragging, setIsDragging] = useState(false);
   const [dragY, setDragY] = useState(0);
   const [startY, setStartY] = useState(0);
-  const [isClosing, setIsClosing] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
@@ -58,18 +56,12 @@ export default function RestaurantModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!rating || !restaurant) return;
-
-    if (!restaurant.id) {
-      alert("Erro: ID do restaurante não encontrado");
+    if (!rating || !restaurant?.id) {
+      alert("Erro: Dados inválidos");
       return;
     }
 
-    const restaurantId =
-      typeof restaurant.id === "number"
-        ? restaurant.id
-        : parseInt(restaurant.id as any, 10);
-
+    const restaurantId = Number(restaurant.id);
     if (isNaN(restaurantId)) {
       alert("Erro: ID do restaurante inválido");
       return;
@@ -80,9 +72,7 @@ export default function RestaurantModal({
     try {
       const response = await fetch("/api/reviews", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           restaurant_id: restaurantId,
           rating,
@@ -90,16 +80,12 @@ export default function RestaurantModal({
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Erro ao marcar visita");
-      }
+      if (!response.ok) throw new Error("Erro ao marcar visita");
 
       setRating(0);
       setReviewText("");
       setIsDrawerOpen(false);
-
       onVisitMarked?.();
-
       alert("Visita marcada com sucesso!");
     } catch (error) {
       console.error("Erro ao marcar visita:", error);
@@ -174,12 +160,9 @@ export default function RestaurantModal({
   };
 
   const handleClose = () => {
-    setIsClosing(true);
     setDragY(window.innerHeight);
-
     setTimeout(() => {
       onClose();
-      setIsClosing(false);
       setDragY(0);
     }, 300);
   };
