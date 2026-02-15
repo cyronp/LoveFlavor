@@ -12,7 +12,6 @@ export async function GET(request: Request) {
       const cookieStore = await cookies();
       const supabase = await createClient(cookieStore);
       
-      // Troca o código por uma sessão
       const { data, error } = await supabase.auth.exchangeCodeForSession(code);
       
       if (error) {
@@ -21,7 +20,6 @@ export async function GET(request: Request) {
       }
 
       if (data.user) {
-        // Verifica se é o primeiro login do usuário
         const { data: profile, error: profileError } = await supabase
           .from("user_profiles")
           .select("first_login_completed")
@@ -33,7 +31,6 @@ export async function GET(request: Request) {
         }
       }
       
-      // Redireciona para a página principal
       return NextResponse.redirect(`${origin}`);
     } catch (error) {
       console.error('Erro no callback de autenticação:', error);
@@ -41,6 +38,5 @@ export async function GET(request: Request) {
     }
   }
 
-  // Se não houver código, redireciona para login
   return NextResponse.redirect(`${origin}/login`);
 }

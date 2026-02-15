@@ -122,11 +122,9 @@ export default function RestaurantModal({
   const handleTouchStart = (e: React.TouchEvent | React.MouseEvent) => {
     if (!scrollContainerRef.current) return;
 
-    // Só permite drag se estiver no topo do scroll
     if (scrollContainerRef.current.scrollTop === 0) {
       const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
       setStartY(clientY);
-      // Não ativa dragging imediatamente, espera o movimento
     }
   };
 
@@ -136,24 +134,20 @@ export default function RestaurantModal({
     const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
     const diff = clientY - startY;
 
-    // Se ainda não está em modo drag, verifica se deve iniciar
     if (
       !isDragging &&
       startY !== 0 &&
       scrollContainerRef.current.scrollTop === 0
     ) {
-      // Só ativa drag se o movimento for claramente para baixo (mais de 5px)
       if (diff > 5) {
         setIsDragging(true);
       }
-      // Se tentar scrollar para cima, cancela o potencial drag
       if (diff < -5) {
         setStartY(0);
         return;
       }
     }
 
-    // Se está em modo drag, continua
     if (isDragging && diff > 0) {
       setDragY(diff);
       e.preventDefault();
