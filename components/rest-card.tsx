@@ -1,8 +1,12 @@
 import { Heart, UtensilsCrossed, Coffee, Globe } from "lucide-react";
 
-import React from "react";
-
 export type Category = "Restaurante" | "Café" | "Outro";
+
+const CATEGORY_ICONS: Record<Category, typeof UtensilsCrossed> = {
+  Restaurante: UtensilsCrossed,
+  Café: Coffee,
+  Outro: Globe,
+};
 
 interface RestaurantCardProps {
   imageSrc: string;
@@ -21,15 +25,7 @@ export default function RestaurantCard({
   rating = 0,
   visits,
 }: RestaurantCardProps) {
-  const getCategoryIcon = () => {
-    if (category === "Restaurante") {
-      return <UtensilsCrossed className="inline w-4 h-4 mr-1" />;
-    }
-    if (category === "Café") {
-      return <Coffee className="inline w-4 h-4 mr-1" />;
-    }
-    return <Globe className="inline w-4 h-4 mr-1" />;
-  };
+  const CategoryIcon = CATEGORY_ICONS[category] || Globe;
 
   return (
     <div className="bg-card text-card-foreground overflow-hidden rounded-lg border cursor-pointer hover:scale-101 transition-all duration-300">
@@ -44,7 +40,7 @@ export default function RestaurantCard({
       <div className="grid gap-1 p-4">
         <h1 className="text-lg leading-tight font-semibold">{title}</h1>
         <h2 className="text-muted-foreground line-clamp-3 flex items-center">
-          {getCategoryIcon()}
+          <CategoryIcon className="inline w-4 h-4 mr-1" />
           {category} • {visits} visitas
         </h2>
         <p className="text-sm text-muted-foreground line-clamp-2">
