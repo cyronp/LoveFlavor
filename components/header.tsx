@@ -8,34 +8,12 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
 import Link from "next/link";
-
-function ListItem({
-  title,
-  children,
-  href,
-  ...props
-}: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
-  return (
-    <li {...props}>
-      <NavigationMenuLink asChild>
-        <Link href={href}>
-          <div className="flex flex-col gap-1 text-sm">
-            <div className="leading-none font-medium">{title}</div>
-            <div className="text-muted-foreground line-clamp-2">{children}</div>
-          </div>
-        </Link>
-      </NavigationMenuLink>
-    </li>
-  );
-}
 
 export default function Header() {
   const router = useRouter();
@@ -77,70 +55,12 @@ export default function Header() {
         <NavigationMenu className="w-full max-w-full" viewport={false}>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent text-sm md:text-base">
-                Restaurantes
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="w-[calc(100vw-2rem)] md:w-96 p-2">
-                  <ListItem href="/restaurantes" title="Ver todos">
-                    Explorar todos os restaurantes
-                  </ListItem>
-                  <ListItem
-                    href="/restaurantes/melhores-notas"
-                    title="Melhores Notas"
-                  >
-                    Restaurantes com as melhores avaliações
-                  </ListItem>
-                  <ListItem
-                    href="/restaurantes/mais-visitados"
-                    title="Mais Visitados"
-                  >
-                    Restaurantes mais visitados por nós
-                  </ListItem>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent text-sm md:text-base">
-                Cafés
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="w-[calc(100vw-2rem)] md:w-96 p-2">
-                  <ListItem href="/cafes" title="Ver todos">
-                    Explorar todos os cafés
-                  </ListItem>
-                  <ListItem href="/cafes/melhores-notas" title="Melhores Notas">
-                    Cafés com as melhores avaliações
-                  </ListItem>
-                  <ListItem href="/cafes/mais-visitados" title="Mais Visitados">
-                    Cafés mais visitados por nós
-                  </ListItem>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent text-sm md:text-base">
-                Outros
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="w-[calc(100vw-2rem)] md:w-96 p-2">
-                  <ListItem href="/outros" title="Ver todos">
-                    Explorar todos os locais
-                  </ListItem>
-                  <ListItem
-                    href="/outros/melhores-notas"
-                    title="Melhores Notas"
-                  >
-                    Outros locais com as melhores avaliações
-                  </ListItem>
-                  <ListItem
-                    href="/outros/mais-visitados"
-                    title="Mais Visitados"
-                  >
-                    Outros locais mais visitados por nós
-                  </ListItem>
-                </ul>
-              </NavigationMenuContent>
+              <NavigationMenuLink
+                asChild
+                className={navigationMenuTriggerStyle()}
+              >
+                <Link href="/top-restaurants">Top Restaurantes</Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuLink
               asChild
