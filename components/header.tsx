@@ -73,15 +73,15 @@ export default function Header() {
           <LogOut className="w-5 h-5" />
         </Button>
       </div>
-      <div className="md:flex justify-center items-center p-1 hidden">
-        <NavigationMenu>
+      <div className="hidden md:flex justify-center items-center p-1 w-full overflow-x-auto">
+        <NavigationMenu className="w-full max-w-full" viewport={false}>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent">
+              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent text-sm md:text-base">
                 Restaurantes
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="w-96 p-2">
+                <ul className="w-[calc(100vw-2rem)] md:w-96 p-2">
                   <ListItem href="/restaurantes" title="Ver todos">
                     Explorar todos os restaurantes
                   </ListItem>
@@ -101,11 +101,11 @@ export default function Header() {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent">
+              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent text-sm md:text-base">
                 Cafés
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="w-96 p-2">
+                <ul className="w-[calc(100vw-2rem)] md:w-96 p-2">
                   <ListItem href="/cafes" title="Ver todos">
                     Explorar todos os cafés
                   </ListItem>
@@ -119,11 +119,11 @@ export default function Header() {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent">
+              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent text-sm md:text-base">
                 Outros
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="w-96 p-2">
+                <ul className="w-[calc(100vw-2rem)] md:w-96 p-2">
                   <ListItem href="/outros" title="Ver todos">
                     Explorar todos os locais
                   </ListItem>
