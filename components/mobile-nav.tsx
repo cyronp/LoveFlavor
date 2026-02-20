@@ -230,7 +230,7 @@ export default function MobileNav() {
       </Drawer>
 
       {/* Navegação inferior */}
-      <nav className="fixed bottom-4 left-4 right-4 bg-transparent backdrop-blur-lg border border-gray-200/50 md:hidden z-30 rounded-full shadow-lg">
+      <nav className="fixed bottom-4 left-4 right-4 border border-gray-200/50 md:hidden z-30 rounded-full shadow-lg">
         <div className="flex justify-around items-center h-16 px-2">
           {/* Pesquisar */}
           <button
