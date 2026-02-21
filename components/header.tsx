@@ -8,12 +8,44 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import {
   NavigationMenu,
+  NavigationMenuContent,
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
+  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
 import Link from "next/link";
+
+import { cn } from "@/lib/utils";
+
+function ListItem({
+  className,
+  title,
+  children,
+  href,
+  ...props
+}: React.ComponentPropsWithoutRef<"a"> & { href: string; title: string }) {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <Link
+          href={href}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className,
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </Link>
+      </NavigationMenuLink>
+    </li>
+  );
+}
 
 export default function Header() {
   const router = useRouter();
@@ -51,23 +83,71 @@ export default function Header() {
           <LogOut className="w-5 h-5" />
         </Button>
       </div>
-      <div className="hidden md:flex justify-center items-center p-1 w-full overflow-x-auto">
-        <NavigationMenu className="w-full max-w-full" viewport={false}>
+      <div className="hidden md:flex justify-center items-center p-1 w-full">
+        <NavigationMenu>
           <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Restaurantes</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid gap-3 w-100">
+                  <ListItem href="/restaurantes" title="Ver todos">
+                    Explorar todos os restaurantes
+                  </ListItem>
+                  <ListItem href="/top-restaurants" title="Melhores Avaliados">
+                    Restaurantes com as melhores avaliações
+                  </ListItem>
+                  <ListItem
+                    href="/restaurantes/mais-visitados"
+                    title="Mais Visitados"
+                  >
+                    Restaurantes mais visitados por nós
+                  </ListItem>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Cafés</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid gap-3 w-100">
+                  <ListItem href="/cafes" title="Ver todos">
+                    Explorar todos os cafés
+                  </ListItem>
+                  <ListItem href="/top-cafes" title="Melhores Avaliados">
+                    Cafés com as melhores avaliações
+                  </ListItem>
+                  <ListItem href="/cafes/mais-visitados" title="Mais Visitados">
+                    Cafés mais visitados por nós
+                  </ListItem>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Outros</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid gap-3 w-100">
+                  <ListItem href="/outros" title="Ver todos">
+                    Explorar todos os outros locais
+                  </ListItem>
+                  <ListItem href="/top-outros" title="Melhores Avaliados">
+                    Outros locais com as melhores avaliações
+                  </ListItem>
+                  <ListItem
+                    href="/outros/mais-visitados"
+                    title="Mais Visitados"
+                  >
+                    Outros locais mais visitados por nós
+                  </ListItem>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
                 className={navigationMenuTriggerStyle()}
               >
-                <Link href="/top-restaurants">Top Restaurantes</Link>
+                <Link href="/wishlist">Lista de Desejos</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-            <NavigationMenuLink
-              asChild
-              className={navigationMenuTriggerStyle()}
-            >
-              <Link href="/wishlist">Lista de Desejos</Link>
-            </NavigationMenuLink>
           </NavigationMenuList>
         </NavigationMenu>
       </div>

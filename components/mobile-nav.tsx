@@ -11,7 +11,10 @@ import {
   LogOut,
   X,
   ChevronDown,
-  ForkKnife,
+  Utensils,
+  Coffee,
+  MoreHorizontal,
+  MapPin,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -26,6 +29,7 @@ import {
   DrawerFooter,
 } from "./ui/drawer";
 import { Button } from "./ui/button";
+import { Separator } from "./ui/separator";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
@@ -45,15 +49,90 @@ interface NavSection {
 const navSections: NavSection[] = [
   {
     title: "Restaurantes",
-    icon: <ForkKnife className="h-5 w-5" />,
+    icon: <Utensils className="h-5 w-5" />,
     items: [
       {
+        href: "/restaurantes",
+        label: "Ver todos",
+        icon: <Utensils className="h-4 w-4" />,
+        description: "Explorar todos os restaurantes",
+      },
+      {
         href: "/top-restaurants",
-        label: "Ver Top Restaurantes",
+        label: "Melhores Avaliados",
         icon: <Star className="h-4 w-4" />,
-        description: "Os melhores restaurantes avaliados",
+        description: "Restaurantes com as melhores avaliações",
+      },
+      {
+        href: "/restaurantes/mais-visitados",
+        label: "Mais Visitados",
+        icon: <MapPin className="h-4 w-4" />,
+        description: "Restaurantes mais visitados por nós",
       },
     ],
+  },
+  {
+    title: "Cafés",
+    icon: <Coffee className="h-5 w-5" />,
+    items: [
+      {
+        href: "/cafes",
+        label: "Ver todos",
+        icon: <Coffee className="h-4 w-4" />,
+        description: "Explorar todos os cafés",
+      },
+      {
+        href: "/top-cafes",
+        label: "Melhores Avaliados",
+        icon: <Star className="h-4 w-4" />,
+        description: "Cafés com as melhores avaliações",
+      },
+      {
+        href: "/cafes/mais-visitados",
+        label: "Mais Visitados",
+        icon: <MapPin className="h-4 w-4" />,
+        description: "Cafés mais visitados por nós",
+      },
+    ],
+  },
+  {
+    title: "Outros",
+    icon: <MoreHorizontal className="h-5 w-5" />,
+    items: [
+      {
+        href: "/outros",
+        label: "Ver todos",
+        icon: <MoreHorizontal className="h-4 w-4" />,
+        description: "Explorar todos os outros locais",
+      },
+      {
+        href: "/top-outros",
+        label: "Melhores Avaliados",
+        icon: <Star className="h-4 w-4" />,
+        description: "Outros locais com as melhores avaliações",
+      },
+      {
+        href: "/outros/mais-visitados",
+        label: "Mais Visitados",
+        icon: <MapPin className="h-4 w-4" />,
+        description: "Outros locais mais visitados por nós",
+      },
+    ],
+  },
+];
+
+const quickLinks: NavItem[] = [
+  {
+    href: "/wishlist",
+    label: "Lista de Desejos",
+    icon: <Heart className="h-5 w-5" />,
+    description: "Lugares que quero visitar",
+  },
+  {
+    href: "/add-location",
+    label: "Adicionar Local",
+    icon: <Plus className="h-5 w-5" />,
+    description: "Adicionar novo restaurante",
   },
 ];
 
@@ -214,6 +293,19 @@ export default function MobileNav() {
                 />
               ))}
             </div>
+
+            <Separator className="my-3" />
+
+            {/* Quick Links */}
+            <div className="space-y-1">
+              {quickLinks.map((item) => (
+                <SidebarNavItem
+                  key={item.href}
+                  item={item}
+                  onClose={closeSidebar}
+                />
+              ))}
+            </div>
           </div>
 
           <DrawerFooter className="border-t">
@@ -230,7 +322,7 @@ export default function MobileNav() {
       </Drawer>
 
       {/* Navegação inferior */}
-      <nav className="fixed bottom-4 left-4 right-4 border border-gray-200/50 md:hidden z-30 rounded-full shadow-lg">
+      <nav className="fixed bottom-4 left-4 right-4 border border-gray-200/50 bg-white md:hidden z-30 rounded-full shadow-lg">
         <div className="flex justify-around items-center h-16 px-2">
           {/* Pesquisar */}
           <button
